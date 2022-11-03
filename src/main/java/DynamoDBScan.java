@@ -14,11 +14,11 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
  * Return all items in a DynamoDB Table
  * <p>
  * This code expects that you have AWS credentials set up per:
- * http://docs.aws.amazon.com/java-sdk/latest/developer-guide/setup-credentials.html
+ * <a href="http://docs.aws.amazon.com/java-sdk/latest/developer-guide/setup-credentials.html">...</a>
  */
 public class DynamoDBScan implements RequestHandler<Map<String,String>, String> {
 
-    static String tableName = "CodeGuru-MusicCollection";
+    static final String tableName = "CodeGuru-MusicCollection";
 
     @Override
     public String handleRequest(Map<String,String> event, Context context)
@@ -27,19 +27,19 @@ public class DynamoDBScan implements RequestHandler<Map<String,String>, String> 
     }
 
     private static String findAllItems() {
-        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
+        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().withRegion("us-east-1").build();
         DynamoDB dynamoDB = new DynamoDB(client);
         Table table = dynamoDB.getTable(tableName);
 
         ItemCollection<ScanOutcome> items = table.scan();
 
         Iterator<Item> iterator = items.iterator();
-        String itemsToReturn = "";
+        StringBuilder itemsToReturn = new StringBuilder();
         while (iterator.hasNext()) {
-            itemsToReturn += iterator.next().toJSONPretty();
+            itemsToReturn.append(iterator.next().toJSONPretty());
         }
 
-        return itemsToReturn;
+        return itemsToReturn.toString();
     }
 
 }
