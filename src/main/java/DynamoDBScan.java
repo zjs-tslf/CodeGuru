@@ -18,7 +18,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
  */
 public class DynamoDBScan implements RequestHandler<Map<String,String>, String> {
 
-    static String tableName = "<FMI1>";
+    static String tableName = "CodeGuru-MusicCollection";
 
     @Override
     public String handleRequest(Map<String,String> event, Context context)
